@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TBIL Online Playground</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Space+Mono|Muli">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,900&display=swap');
+
+        #exec {
+            transition: box-shadow 0.1s, background 0.1s;
+            padding: 13px;
+            font-size: medium;
+            outline: none;
+            border: none;
+            background: #129929;
+            color: white;
+            border-radius: 0.2em;
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.24), 0 0 1px 0 rgba(0, 0, 0, 0.19);
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 100;
+        }
+
+        #exec:hover {
+            box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.24), 0 0 1px 0 rgba(0, 0, 0, 0.19);
+            background: #24bb38;
+            color: white;
+            outline: none;
+            border: none;
+        }
+
+        #exec:active {
+            background-color: #118124;
+        }
+
+        html {
+            font-family: 'Open Sans', sans-serif;
+            padding: 5px;
+            color: gainsboro;
+            background-color: rgb(85, 85, 85);
+        }
+
+        *:focus,
+        *:hover {
+            outline: none;
+        }
+
+        .wrapper {
+            padding: 20px;
+            margin: 0px 15px;
+            margin-bottom: 3em;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            display: inline-block;
+            position: relative;
+            width: 98%;
+            height: 25em;
+        }
+
+        textarea {
+            color: white;
+            background-color: black;
+            width: 100%;
+            resize: none;
+            border: 1px solid gray;
+            box-shadow: 1px -1px 15px 0px rgba(0, 0, 0, 0.31);
+            -webkit-box-shadow: 1px -1px 15px 0px rgba(0, 0, 0, 0.31);
+            -moz-box-shadow: 1px -1px 15px 0px rgba(0, 0, 0, 0.31);
+            transition: transform 0.3s;
+        }
+
+        ::placeholder {
+            /* Chrome, Firefox, Opera, Safari 10.1+ */
+            color: gainsboro;
+            opacity: 1;
+            /* Firefox */
+        }
+
+        :-ms-input-placeholder {
+            /* Internet Explorer 10-11 */
+            color: gainsboro;
+        }
+
+        ::-ms-input-placeholder {
+            /* Microsoft Edge */
+            color: gainsboro;
+        }
+
+        textarea:hover {
+            transform: scale(1.01);
+            -webkit-transform: scale(1.01);
+            -moz-transform: scale(1.01);
+        }
+
+        #heading {
+            text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.7);
+            font-weight: bolder;
+            font-family: "Space Mono", monospace;
+        }
+
+        p {
+            font-family: Muli, sans-serif;
+            font-weight: 200;
+            font-size: large;
+            margin-top: -0.7em;
+        }
+
+        small {
+            font-family: Muli, sans-serif;
+        }
+
+        /* width */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #f1f1f100;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 10px;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #888;
+        }
+
+        .output {
+            white-space: pre;
+            background-color: black;
+            color: yellow;
+            font-family: 'Source Code Pro', monospace;
+            padding: 0.3em;
+            overflow-y: scroll;
+            height: 7em;
+            scroll-behavior: smooth;
+            border-radius: 5px;
+            box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.24), 0 0 1px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        err {
+            white-space: pre;
+            background-color: black;
+            color: red;
+        }
+
+        a {
+            color: greenyellow;
+            font-weight: bold;
+        }
+
+        a:hover {
+            background-color: greenyellow;
+            color: black;
+            box-shadow: 1px -1px 5px 0px rgba(0, 0, 0, 0.31);
+            padding: 1px;
+        }
+
+        #editor {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-size: 20px;
+            border-radius: 5px;
+            box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.24), 0 0 1px 0 rgba(0, 0, 0, 0.19);
+            transition: box-shadow 0.2s;
+        }
+
+        #editor:focus-within {
+            box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.54), 0 0 1px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .output:focus-within {
+            box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.54), 0 0 1px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .padding {
+            margin-left: 15px;
+        }
+
+        .align-right {
+            margin-top: 2px;
+            right: 1;
+            float: right;
+        }
+
+        .top-right {
+            float: right;
+            float: top;
+            position: absolute;
+            left: 89%;
+            bottom: 88%;
+        }
+
+        .ace_status-indicator {
+            color: gray;
+            position: absolute;
+            right: 0;
+            border-left: 1px solid;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="padding">
+        <h1 id="heading">TBIL Online Playground</h1>
+        <p>Play with the <b>Trash But Interpreted Language!</b></p>
+        <button id="exec" class="top-right">Compile & Execute</button>
+    </div>
+    <div class="wrapper">
+        <pre id="editor">
+! there are different modes (jsc, core, portable)
+! you need to specify a mode for the code to execute
+! NOTE: JSC mode works with the C++ variant of TBIL compiler
+.mode jsc
+
+! push values into registers
+push 1 RSI
+push 3 RTI
+
+! call add
+addcs
+
+! print interrupt
+inv 0xD1422</pre>
+    </div>
+    <div class="padding">
+        <h1 id="heading">Output:</h1>
+        <div class="output" id="output">Click <b>Compile & Execute</b> to run<br></div>
+    </div>
+    <div class="padding">
+        <hr>
+        <small>Made by <a href="https://youtube.com/c/yeppii">yeppii</a></small>
+        <small class="align-right">Check out my <a href="https://github.com/asiawin">GitHub</a></small>
+    </div>
+
+    <!-- Ace editor -->
+    <script src="./editor/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./editor/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./editor/ext-statusbar.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./editor/ext-settings_menu.js" type="text/javascript" charset="utf-8"></script>
+
+    <script>
+        ace.require("ace/ext/language_tools");
+
+        var settingsMenu = ace.require("ace/ext/settings_menu");
+        var editor = ace.edit("editor");
+
+        settingsMenu.init(editor);
+
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/tbil");
+        editor.commands.addCommands([{
+            name: "showSettingsMenu",
+            bindKey: { win: "Ctrl-q", mac: "Ctrl-q" },
+            exec: (editor) => {
+                editor.showSettingsMenu();
+            },
+            readOnly: true
+        }]);
+        editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            enableLiveAutocompletion: true
+        });
+    </script>
+
+    <!-- Interpreter -->
+    <script src="./core/tbil.js" type="text/javascript" charset="utf-8"></script>
+</body>
+
+</html>
